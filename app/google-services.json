@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "848199563817",
+    "firebase_url": "https://legiomariae-dd60c.firebaseio.com",
+    "project_id": "legiomariae-dd60c",
+    "storage_bucket": "legiomariae-dd60c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848199563817:android:53b605304e0ce542ec3a38",
+        "android_client_info": {
+          "package_name": "com.shoonkim.legiomariae"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848199563817-f0is1g9m5fkql8digpjbj55g56fgcd8b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shoonkim.legiomariae",
+            "certificate_hash": "f19b6f9f6b6259707b320df9a7dac51fe2f7e22f"
+          }
+        },
+        {
+          "client_id": "848199563817-7aq158ceefa2foctrqogi57hf8tskqu6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYaLEnlPoTbZ9PWsBk07dwr2XLl83YdwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848199563817-7aq158ceefa2foctrqogi57hf8tskqu6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
