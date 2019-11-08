@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.week_calender_activity.*
 import java.util.*
 
@@ -19,8 +16,6 @@ class WeekCalenderActivity : AppCompatActivity() {
     var list = arrayListOf<WeekCalenderData>()
     var wca_adapter : WeekCalenderListAdapter? = null
     var wcaHandler : WCAHandler? = null
-    var wca_db : FirebaseFirestore? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,27 +43,9 @@ class WeekCalenderActivity : AppCompatActivity() {
     inner class wca_db_setup() : Thread(){
         @SuppressLint("LongLogTag")
         override fun run() {
-            wca_db = FirebaseFirestore.getInstance()
-            val settings = FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(true)
-                .build()
-            wca_db!!.firestoreSettings = settings
 
-            Log.d(WCATAG,wca_db.toString())
+            list = FirebaseFirestoreHelper.getWeekCalender(Calendar.getInstance())
 
-            val DocumentRef = wca_db!!.collection("Calender")
-                .document("201911")
-
-            DocumentRef.collection("Day")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d(WCATAG, "${document.id} => ${document.data}")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(WCATAG, "Error getting documents.", exception)
-                }
         }
     }
 
