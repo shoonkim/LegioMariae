@@ -36,12 +36,24 @@ object FirebaseFirestoreHelper{
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
+                    list.add(
+                        WeekCalenderData(document.id, "",
+                        document.getString("LiturgicalDay")!!,
+                        document.getString("toDayGospel")!!,
+                        "")
+                    )
                     Log.d(TAG, "${document.id} => ${document.data}")
                 }
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents.", exception)
             }
+
+        if (list != null) {
+            for(tmp in list){
+                Log.d(TAG, "** ${tmp.day} => ${tmp.liturgicalDay}")
+            }
+        }
 
         return list
     }

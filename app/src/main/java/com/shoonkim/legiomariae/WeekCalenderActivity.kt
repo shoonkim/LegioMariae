@@ -1,10 +1,12 @@
 package com.shoonkim.legiomariae
 
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import kotlinx.android.synthetic.main.week_calender_activity.*
 import java.util.*
 
@@ -49,6 +51,29 @@ class WeekCalenderActivity : AppCompatActivity() {
         }
     }
 
+    inner class WeekCalenderUpData : AsyncTask<Void, Void, ArrayList<WeekCalenderData>>() {
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<WeekCalenderData>? {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+            return FirebaseFirestoreHelper.getWeekCalender(Calendar.getInstance())
+        }
+
+        @SuppressLint("LongLogTag")
+        override fun onPostExecute(result: ArrayList<WeekCalenderData>?) {
+            super.onPostExecute(result)
+
+            Log.d(WCATAG, "onPostExecute")
+
+            if (result != null) {
+                for(tmp in result){
+                    Log.d(WCATAG, "${tmp.day} => ${tmp.liturgicalDay}")
+                }
+            }
+        }
+    }
+
+
     @SuppressLint("LongLogTag")
     fun initList(){
         /*
@@ -62,7 +87,8 @@ class WeekCalenderActivity : AppCompatActivity() {
         Log.d(WCATAG, curYear + ":" + curMonth +":"+curDay+":"+carWeek)
          */
 
-        val bd_setup = wca_db_setup()
-        bd_setup.start()
+        //val bd_setup = wca_db_setup()
+        //bd_setup.start()
+        WeekCalenderUpData().execute()
     }
 }
