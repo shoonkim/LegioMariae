@@ -26,4 +26,5 @@ class WeekCalenderListAdapter(val context: Context, val list:ArrayList<WeekCalen
     override fun getCount(): Int {
         return list.size
     }
+
 }

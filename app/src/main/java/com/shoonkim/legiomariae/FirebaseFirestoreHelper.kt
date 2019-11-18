@@ -26,11 +26,11 @@ object FirebaseFirestoreHelper{
 
     fun getWeekCalender( today : Calendar): ArrayList<WeekCalenderData>{
         val list  = arrayListOf<WeekCalenderData>()
-
         val curMonth = today.get(Calendar.YEAR).toString() + (today.get(Calendar.MONTH).toInt() + 1).toString()
-
         val DocumentRef = db!!.collection("Calender")
             .document(curMonth)
+
+        var isRun : Boolean = true
 
         DocumentRef.collection("Day")
             .get()
@@ -42,19 +42,22 @@ object FirebaseFirestoreHelper{
                         document.getString("toDayGospel")!!,
                         "")
                     )
-                    Log.d(TAG, "${document.id} => ${document.data}")
+                    //Log.d(TAG, "${document.id} => ${document.data}")
                 }
+                isRun = false
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents.", exception)
+                isRun = false
             }
 
-        if (list != null) {
+        while(isRun){ }
+
+        /*if (list != null) {
             for(tmp in list){
                 Log.d(TAG, "** ${tmp.day} => ${tmp.liturgicalDay}")
             }
-        }
-
+        }*/
         return list
     }
 }

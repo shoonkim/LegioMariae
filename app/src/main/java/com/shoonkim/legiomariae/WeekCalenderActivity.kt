@@ -27,7 +27,6 @@ class WeekCalenderActivity : AppCompatActivity() {
         week_calender_list_view.adapter = wca_adapter
 
         wcaHandler = WCAHandler()
-
         wcaHandler?.sendEmptyMessage(WEEKCALENDERACTIVITY_STATRT)
     }
 
@@ -55,7 +54,6 @@ class WeekCalenderActivity : AppCompatActivity() {
 
         override fun doInBackground(vararg p0: Void?): ArrayList<WeekCalenderData>? {
             //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
             return FirebaseFirestoreHelper.getWeekCalender(Calendar.getInstance())
         }
 
@@ -66,9 +64,12 @@ class WeekCalenderActivity : AppCompatActivity() {
             Log.d(WCATAG, "onPostExecute")
 
             if (result != null) {
+                list.clear()
                 for(tmp in result){
+                    list.add(tmp)
                     Log.d(WCATAG, "${tmp.day} => ${tmp.liturgicalDay}")
                 }
+                wca_adapter!!.notifyDataSetInvalidated()
             }
         }
     }
