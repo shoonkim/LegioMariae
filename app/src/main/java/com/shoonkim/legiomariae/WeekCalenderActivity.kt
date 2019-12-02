@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
-import kotlinx.android.synthetic.main.week_calender_activity.*
+import androidx.fragment.app.Fragment
+import com.shoonkim.legiomariae.data.WCItem
+import com.shoonkim.legiomariae.ui.WCAFragment
 import java.util.*
 
 const val WCATAG:String = "WEEKCALENDERACTIVITY_STATRT"
@@ -15,19 +17,29 @@ const val WEEKCALENDERACTIVITY_STATRT = 101
 
 class WeekCalenderActivity : AppCompatActivity() {
 
-    var list = arrayListOf<WeekCalenderData>()
+    var list = arrayListOf<WCItem>()
     var wca_adapter : WeekCalenderListAdapter? = null
     var wcaHandler : WCAHandler? = null
 
+    @SuppressLint("LongLogTag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.week_calender_activity)
 
-        wca_adapter = WeekCalenderListAdapter(this, list)
-        week_calender_list_view.adapter = wca_adapter
+        if(savedInstanceState == null){
+            changeFragment(WCAFragment())
 
+            Log.d(WCATAG, " changeFragment")
+        }
         wcaHandler = WCAHandler()
         wcaHandler?.sendEmptyMessage(WEEKCALENDERACTIVITY_STATRT)
+    }
+
+    fun changeFragment(f: Fragment, cleanStack: Boolean = false){
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.wca_base_content, f)
+        ft.addToBackStack(null)
+        ft.commit()
     }
 
     inner class WCAHandler : Handler(){
@@ -50,15 +62,14 @@ class WeekCalenderActivity : AppCompatActivity() {
         }
     }
 
-    inner class WeekCalenderUpData : AsyncTask<Void, Void, ArrayList<WeekCalenderData>>() {
+    inner class WeekCalenderUpData : AsyncTask<Void, Void, ArrayList<WCItem>>() {
 
-        override fun doInBackground(vararg p0: Void?): ArrayList<WeekCalenderData>? {
-            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun doInBackground(vararg p0: Void?): ArrayList<WCItem>? {
             return FirebaseFirestoreHelper.getWeekCalender(Calendar.getInstance())
         }
 
         @SuppressLint("LongLogTag")
-        override fun onPostExecute(result: ArrayList<WeekCalenderData>?) {
+        override fun onPostExecute(result: ArrayList<WCItem>?) {
             super.onPostExecute(result)
 
             Log.d(WCATAG, "onPostExecute")
@@ -69,7 +80,6 @@ class WeekCalenderActivity : AppCompatActivity() {
                     list.add(tmp)
                     Log.d(WCATAG, "${tmp.day} => ${tmp.liturgicalDay}")
                 }
-                wca_adapter!!.notifyDataSetInvalidated()
             }
         }
     }

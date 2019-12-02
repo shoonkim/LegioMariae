@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         maHandler = MainHandler()
         maHandler.sendEmptyMessage(HandlerMsg.APP_START.V)
+        MsgLooper.sendEmptyMessage(HandlerMsg.APP_START.V)
     }
 
     inner class MainHandler : Handler(){

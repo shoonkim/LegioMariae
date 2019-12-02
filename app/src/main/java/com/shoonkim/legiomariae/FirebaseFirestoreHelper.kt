@@ -3,6 +3,7 @@ package com.shoonkim.legiomariae
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.shoonkim.legiomariae.data.WCItem
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,8 +25,8 @@ object FirebaseFirestoreHelper{
         return db != null
     }
 
-    fun getWeekCalender( today : Calendar): ArrayList<WeekCalenderData>{
-        val list  = arrayListOf<WeekCalenderData>()
+    fun getWeekCalender( today : Calendar): ArrayList<WCItem>{
+        val list  = arrayListOf<WCItem>()
         val curMonth = today.get(Calendar.YEAR).toString() + (today.get(Calendar.MONTH).toInt() + 1).toString()
         val DocumentRef = db!!.collection("Calender")
             .document(curMonth)
@@ -37,10 +38,12 @@ object FirebaseFirestoreHelper{
             .addOnSuccessListener { result ->
                 for (document in result) {
                     list.add(
-                        WeekCalenderData(document.id, "",
-                        document.getString("LiturgicalDay")!!,
-                        document.getString("toDayGospel")!!,
-                        "")
+                        WCItem(
+                            document.id, "",
+                            document.getString("LiturgicalDay")!!,
+                            document.getString("toDayGospel")!!,
+                            ""
+                        )
                     )
                     //Log.d(TAG, "${document.id} => ${document.data}")
                 }
