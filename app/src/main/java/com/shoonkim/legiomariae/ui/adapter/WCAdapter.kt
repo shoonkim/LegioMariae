@@ -17,7 +17,7 @@ class WCAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     }
 
     init {
-        delegateAdapters.put(AdapterType.LOADING_WC, LoadingWCItemAdapter())
+        delegateAdapters.put(AdapterType.LOADING_WC, WCItemLoadingAdapter())
         delegateAdapters.put(AdapterType.WC, WCItemAdapter())
         items = ArrayList()
         items.add(loadingItem)
