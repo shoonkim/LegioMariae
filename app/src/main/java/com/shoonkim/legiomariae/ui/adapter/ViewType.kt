@@ -1,5 +1,5 @@
 package com.shoonkim.legiomariae.ui.adapter
 
-interface ViewType{
+interface ViewType {
     fun getViewType(): Int
 }
