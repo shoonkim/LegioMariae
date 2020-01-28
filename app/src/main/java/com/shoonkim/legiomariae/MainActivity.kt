@@ -2,6 +2,7 @@ package com.shoonkim.legiomariae
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.shoonkim.legiomariae.ui.WAC_Fragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -9,11 +10,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*
-        btn_activity_report_test.setOnClickListener {
-            val intent = Intent(this, WeekCalenderActivity::class.java)
-            startActivity(intent)
+        if(savedInstanceState == null){
+            changeFragment(WAC_Fragment())
         }
-         */
+    }
+
+    private fun changeFragment(f: WAC_Fragment, cleanStact : Boolean = false) {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.base_content, f)
+        ft.addToBackStack(null)
+        ft.commit()
     }
 }
