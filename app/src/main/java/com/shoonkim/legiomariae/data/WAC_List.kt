@@ -3,6 +3,6 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class WAD_List(
+data class WAC_List(
     var page : Int?,
-    val results : List<WAD_Item>) : Parcelable { }
+    val results : List<WAC_Item>) : Parcelable { }

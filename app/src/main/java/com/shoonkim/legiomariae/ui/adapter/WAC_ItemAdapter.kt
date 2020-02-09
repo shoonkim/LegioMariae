@@ -3,9 +3,10 @@ package com.shoonkim.legiomariae.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shoonkim.legiomariae.R
-import com.shoonkim.legiomariae.data.WAD_Item
+import com.shoonkim.legiomariae.data.WAC_Item
 import com.shoonkim.legiomariae.utils.inflate
 import kotlinx.android.synthetic.main.wac_item_day.view.*
+import java.util.*
 
 class WAC_ItemAdapter : ItemAdapter {
 
@@ -17,7 +18,7 @@ class WAC_ItemAdapter : ItemAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         holder as WAC_ViewHonder
-        holder.bind(item as WAD_Item)
+        holder.bind(item as WAC_Item)
     }
 
     inner class WAC_ViewHonder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -29,10 +30,15 @@ class WAC_ItemAdapter : ItemAdapter {
         private val txt_to_day_gospel = itemView.wci_cardwiew_txt_to_day_gospel
         private val txt_content = itemView.wci_cardwiew_txt_content
 
-        fun bind(item : WAD_Item){
-            //val c =
-            // 여기부터 코딩....^^;
+        fun bind(item : WAC_Item){
+            val cal = Calendar.getInstance()
+            cal.time = Date(item.itemDate)
+            txt_day.text = cal.get(Calendar.DAY_OF_MONTH).toString()
+            txt_day_week.text = cal.get(Calendar.DAY_OF_WEEK).toString()
 
+            txt_liturgical_day.text = item.itemLiturgicalDay
+            txt_to_day_gospel.text = item.itemToDayGospel
+            txt_content.text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         }
 
     }
