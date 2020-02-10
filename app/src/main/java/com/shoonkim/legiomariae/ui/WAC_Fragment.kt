@@ -1,23 +1,25 @@
 package com.shoonkim.legiomariae.ui
 
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shoonkim.legiomariae.R
-import com.shoonkim.legiomariae.data.WAC_Item
 import com.shoonkim.legiomariae.ui.adapter.WAC_Adapter
 import com.shoonkim.legiomariae.utils.inflate
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.wac_frag_recycler.*
+import java.util.*
 
-class WAC_Fragment : Fragment() {
+class WAC_Fragment : RxBaseFragment() {
 
     private val  wacList by lazy{ wac_rv_list }
+    private val fbManager by lazy{FirebaseManager()}
+    private val curDate = Date(Calendar.getInstance().timeInMillis)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,22 +41,21 @@ class WAC_Fragment : Fragment() {
         if(wac_rv_list.adapter == null ){
             wac_rv_list.adapter = WAC_Adapter()
         }
+        requestWAC(curDate)
+    }
 
-        if(savedInstanceState == null){
-            val wacList = mutableListOf<WAC_Item>()
-
-            for(i in 1..10){
-                wacList.add(
-                    WAC_Item(
-                        Calendar.getInstance().timeInMillis,
-                        "AA",
-                        "BB"
-                    )
-                )
-            }
-
-            (wac_rv_list.adapter as WAC_Adapter).addWAC_List(wacList)
-        }
-
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun requestWAC(curDate : Date) {
+        val subscription = fbManager.getWACList(curDate)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    requestWAC->(wacList.adapter as WAC_Adapter).addWAC_List(requestWAC)
+                },{
+                    e->
+                }
+            )
+        subscriptions.add(subscription)
     }
 }
