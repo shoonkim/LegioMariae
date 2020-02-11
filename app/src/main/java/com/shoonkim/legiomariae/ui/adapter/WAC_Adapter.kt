@@ -37,7 +37,7 @@ class WAC_Adapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         items.removeAt(initPosition)
         notifyItemRemoved(initPosition)
 
-        items.addAll(wacList)
+        items.addAll(wacList.reversed())
         items.add(loadingItem)
         notifyItemRangeChanged(initPosition, items.size+1)
     }

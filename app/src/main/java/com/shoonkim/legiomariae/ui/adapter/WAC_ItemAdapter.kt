@@ -1,10 +1,12 @@
 package com.shoonkim.legiomariae.ui.adapter
 
+import android.graphics.Color
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shoonkim.legiomariae.R
 import com.shoonkim.legiomariae.data.WAC_Item
 import com.shoonkim.legiomariae.utils.inflate
+import com.shoonkim.legiomariae.utils.numTodayWeek
 import kotlinx.android.synthetic.main.wac_item_day.view.*
 import java.util.*
 
@@ -33,8 +35,14 @@ class WAC_ItemAdapter : ItemAdapter {
         fun bind(item : WAC_Item){
             val cal = Calendar.getInstance()
             cal.time = Date(item.itemDate)
+            val dayWeek = cal.get(Calendar.DAY_OF_WEEK)
             txt_day.text = cal.get(Calendar.DAY_OF_MONTH).toString()
-            txt_day_week.text = cal.get(Calendar.DAY_OF_WEEK).toString()
+            txt_day_week.text = numTodayWeek(dayWeek)
+
+            if(dayWeek == 1){
+                txt_day.setTextColor(Color.parseColor("#CC3D3D"))
+                txt_day_week.setTextColor(Color.parseColor("#CC3D3D"))
+            }
 
             txt_liturgical_day.text = item.itemLiturgicalDay
             txt_to_day_gospel.text = item.itemToDayGospel

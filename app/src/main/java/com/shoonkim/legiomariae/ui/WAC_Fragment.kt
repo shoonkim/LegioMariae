@@ -20,6 +20,7 @@ class WAC_Fragment : RxBaseFragment() {
     private val  wacList by lazy{ wac_rv_list }
     private val fbManager by lazy{FirebaseManager()}
     private val curDate = Date(Calendar.getInstance().timeInMillis)
+    private val meetingDay = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +47,7 @@ class WAC_Fragment : RxBaseFragment() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun requestWAC(curDate : Date) {
-        val subscription = fbManager.getWACList(curDate)
+        val subscription = fbManager.getWACList(curDate, meetingDay)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

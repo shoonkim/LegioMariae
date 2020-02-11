@@ -7,7 +7,10 @@ import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
 import com.shoonkim.legiomariae.data.WAC_Item
+import com.shoonkim.legiomariae.utils.dateTodayWeek
+import com.shoonkim.legiomariae.utils.fewDaysAgo
 import io.reactivex.Observable
 import java.util.*
 
@@ -15,7 +18,11 @@ class FirebaseManager {
 
     @SuppressLint("LongLogTag")
     @RequiresApi(Build.VERSION_CODES.N)
-    fun getWACList(curDate : Date) : Observable<List<WAC_Item>>{
+    fun getWACList(curDate : Date, meetingDay : Int) : Observable<List<WAC_Item>>{
+
+        val searchDays = 7 + dateTodayWeek(curDate) - meetingDay
+        val searchStartDay = fewDaysAgo(curDate,  searchDays)
+
 
         return Observable.create { subscriber ->
             val wacList = mutableListOf<WAC_Item>()
@@ -30,9 +37,10 @@ class FirebaseManager {
 
             val DocumentRef = db.collection("Calender")
 
-            DocumentRef.whereGreaterThanOrEqualTo("date", Timestamp(curDate))
+
+            DocumentRef.whereGreaterThanOrEqualTo("date", Timestamp(searchStartDay.time))
                 .orderBy("date")
-                .limit(14)
+                .limit(searchDays.toLong())
                 .get()
                 .addOnSuccessListener {
                     result->
@@ -44,13 +52,13 @@ class FirebaseManager {
                                 document.getString("toDayGospel")!!
                             )
                         )
-                        Log.d("FirebaseFirestoreManager", "${document.id} => ${document.data}")
+                        //Log.d("FirebaseFirestoreManager", "${document.id} => ${document.data}")
                     }
                     isRun = false
                 }
                 .addOnFailureListener{
                     exception ->
-                    Log.d("FirebaseFirestoreManager", "Failure")
+                    //Log.d("FirebaseFirestoreManager", "Failure")
                     isRun = false
                 }
 
