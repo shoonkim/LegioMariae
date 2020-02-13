@@ -23,7 +23,6 @@ class FirebaseManager {
         val searchDays = 7 + dateTodayWeek(curDate) - meetingDay
         val searchStartDay = fewDaysAgo(curDate,  searchDays)
 
-
         return Observable.create { subscriber ->
             val wacList = mutableListOf<WAC_Item>()
 
@@ -33,10 +32,7 @@ class FirebaseManager {
                 .build()
             db.firestoreSettings = settings
 
-            var isRun : Boolean = true
-
             val DocumentRef = db.collection("Calender")
-
 
             DocumentRef.whereGreaterThanOrEqualTo("date", Timestamp(searchStartDay.time))
                 .orderBy("date")
@@ -52,20 +48,14 @@ class FirebaseManager {
                                 document.getString("toDayGospel")!!
                             )
                         )
-                        //Log.d("FirebaseFirestoreManager", "${document.id} => ${document.data}")
                     }
-                    isRun = false
+                    subscriber.onNext(wacList)
+                    subscriber.onComplete()
                 }
                 .addOnFailureListener{
                     exception ->
-                    //Log.d("FirebaseFirestoreManager", "Failure")
-                    isRun = false
+                    subscriber.onError(Throwable(exception.message))
                 }
-
-            while(isRun){ }
-
-            subscriber.onNext(wacList)
-            subscriber.onComplete()
         }
     }
 }

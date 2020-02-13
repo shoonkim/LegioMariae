@@ -16,4 +16,5 @@ open class RxBaseFragment : Fragment() {
         super.onPause()
         subscriptions.clear()
     }
+
 }

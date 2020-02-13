@@ -42,6 +42,20 @@ class WAC_Adapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         notifyItemRangeChanged(initPosition, items.size+1)
     }
 
+    fun clearAndAddWACList(wacList: List<WAC_Item>) {
+
+        items.clear()
+        notifyItemRangeChanged(0, getLastPosition())
+
+        items.addAll(wacList)
+        items.add(loadingItem)
+        notifyItemRangeChanged(0, items.size)
+    }
+
+    fun getWACList(): List<WAC_Item> = items
+        .filter { it.getViewType() == AdapterType.WACITEM }
+        .map{it as WAC_Item}
+
     private fun getLastPosition() = if(items.lastIndex == -1) 0 else items.lastIndex
 
 }

@@ -9,6 +9,8 @@ fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
 }
 
+fun <T> androidLazy(initializer : () -> T) : Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)
+
 fun dateTodayWeek(cur : Date) : Int {
     val cal = Calendar.getInstance()
     cal.time = cur
